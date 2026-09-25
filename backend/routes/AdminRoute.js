@@ -5,7 +5,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // Use an environment variable in production
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // No limit on login attempts before this meant a script could try passwords
 // forever. 10 tries per 15 min per IP is enough for a real admin who mistypes
